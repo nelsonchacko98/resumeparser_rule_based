@@ -1,16 +1,16 @@
+from os import write
 from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.converter import TextConverter
 from pdfminer.layout import LAParams
 from pdfminer.pdfpage import PDFPage
-from cStringIO import StringIO
+from io import StringIO
 
 def convertPDFToText(path):
     rsrcmgr = PDFResourceManager()
     retstr = StringIO()
-    codec = 'utf-8'
     laparams = LAParams()
-    device = TextConverter(rsrcmgr, retstr, codec=codec, laparams=laparams)
-    fp = file(path, 'rb')
+    device = TextConverter(rsrcmgr, retstr, laparams=laparams)
+    fp = open(path, 'rb')
     interpreter = PDFPageInterpreter(rsrcmgr, device)
     password = ""
     maxpages = 0
@@ -23,3 +23,14 @@ def convertPDFToText(path):
     string = retstr.getvalue()
     retstr.close()
     return string
+
+def main() : 
+    path = r"C:\Users\nelson.c\dev\Resume_Nelson.pdf"
+    text = convertPDFToText(path)
+    
+    with open(r"C:\Users\nelson.c\dev\Resume_Nelson_pdf.txt","w",encoding="utf-8") as f :
+        f.write(text)
+    
+if __name__ == "__main__" : 
+    main()
+    exit()

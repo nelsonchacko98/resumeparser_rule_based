@@ -162,7 +162,7 @@ class Parse():
                 return ''
                 pass
         else:
-            print 'Unsupported format'
+            print('Unsupported format')
             return '', ''
 
     def preprocess(self, document):
@@ -198,14 +198,14 @@ class Parse():
             # sentences - split on the basis of rules of grammar
             return tokens, lines, sentences
         except Exception as e:
-            print e 
+            print(e)
 
     def tokenize(self, inputString):
         try:
             self.tokens, self.lines, self.sentences = self.preprocess(inputString)
             return self.tokens, self.lines, self.sentences
         except Exception as e:
-            print e
+            print(e)
 
     def getEmail(self, inputString, infoDict, debug=False): 
         '''
@@ -220,12 +220,12 @@ class Parse():
             matches = pattern.findall(inputString) # Gets all email addresses as a list
             email = matches
         except Exception as e:
-            print e
+            print(e)
 
         infoDict['email'] = email
 
         if debug:
-            print "\n", pprint(infoDict), "\n"
+            print("\n", pprint(infoDict), "\n")
             code.interact(local=locals())
         return email
 
@@ -279,7 +279,7 @@ class Parse():
         infoDict['phone'] = number
 
         if debug:
-            print "\n", pprint(infoDict), "\n"
+            print("\n", pprint(infoDict), "\n")
             code.interact(local=locals())
         return number
 
@@ -336,14 +336,14 @@ class Parse():
                 otherNameHits = nameHits[1:]
 
         except Exception as e:
-            print traceback.format_exc()
-            print e         
+            print(traceback.format_exc())
+            print(e)
 
         infoDict['name'] = name
         infoDict['otherNameHits'] = otherNameHits
 
         if debug:
-            print "\n", pprint(infoDict), "\n"
+            print("\n", pprint(infoDict), "\n")
             code.interact(local=locals())
         return name, otherNameHits  
     
@@ -361,14 +361,14 @@ class Parse():
                                 if leaf[1]=='CD':
                                     experience=leaf[0]
         except Exception as e:
-            print traceback.format_exc()
-            print e 
+            print(traceback.format_exc())
+            print(e)
         if experience:
             infoDict['experience'] = experience
         else:
             infoDict['experience']=0
         if debug:
-            print "\n", pprint(infoDict), "\n"
+            print("\n", pprint(infoDict), "\n")
             code.interact(local=locals())
         return experience
 
@@ -415,7 +415,7 @@ class Parse():
                                                 line.append(wordstr)
                                 
                         except Exception as e:
-                            print traceback.format_exc()
+                            print(traceback.format_exc())
 
             if D1=='c\.?a':
                 infoDict['%sinstitute'%D1] ="I.C.A.I"
@@ -430,8 +430,8 @@ class Parse():
                 infoDict['%syear'%D1] =0
             infoDict['%sline'%D1]=list(set(line))
         except Exception as e:
-            print traceback.format_exc()
-            print e 
+            print(traceback.format_exc())
+            print(e)
 
 
     def Qualification(self,inputString,infoDict,debug=False):
@@ -461,7 +461,7 @@ class Parse():
         else:
             infoDict['degree'] = "NONE"
         if debug:
-            print "\n", pprint(infoDict), "\n"
+            print("\n", pprint(infoDict), "\n")
             code.interact(local=locals())
         return infoDict['degree']
 
