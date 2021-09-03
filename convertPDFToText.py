@@ -30,6 +30,7 @@ def main() :
     
     with open(r"C:\Users\nelson.c\dev\Resume_Nelson_pdf.txt","w",encoding="utf-8") as f :
         f.write(text)
+    return
     
 if __name__ == "__main__" : 
     main()
