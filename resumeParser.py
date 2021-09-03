@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 
 import nltk, os, subprocess, code, glob, re, traceback, sys, inspect
-from time import clock, sleep
+# from time import clock, sleep
 from pprint import pprint
-import json
-import zipfile
+# import json
+# import zipfile
 # import ner
 from convertPDFToText import convertPDFToText
-from convertDocxToText import convertDocxToText
+# from convertDocxToText import convertDocxToText
 #from convertRtfToText import convertRtfToText
 
 
@@ -87,13 +87,14 @@ class Parse():
         fields = ["name", "address", "email", "phone", "mobile", "telephone", "residence status","experience","degree","cainstitute","cayear","caline","b.cominstitute","b.comyear","b.comline","icwainstitue","icwayear","icwaline","m.cominstitute","m.comyear","m.comline","mbainstitute","mbayear","mbaline"]
 
         # Glob module matches certain patterns
-        doc_files = glob.glob("resumes/*.doc")
-        docx_files = glob.glob("resumes/*.docx")
+        # doc_files = glob.glob("Language_Processing//resumes//*.doc")
+        # docx_files = glob.glob("resumes/*.docx")
         pdf_files = glob.glob("resumes/*.pdf")
-        rtf_files = glob.glob("resumes/*.rtf")
-        text_files = glob.glob("resumes/*.txt")
+        # rtf_files = glob.glob("resumes/*.rtf")
+        # text_files = glob.glob("resumes/*.txt")
 
-        files = set(doc_files + docx_files + pdf_files + rtf_files + text_files)
+        # files = set(doc_files + docx_files + pdf_files + rtf_files + text_files)
+        files = set(pdf_files)
         files = list(files)
         print ("%d files identified" %len(files))
  
@@ -131,28 +132,7 @@ class Parse():
         UNIX packages required: antiword, ps2ascii
         '''
         extension = fileName.split(".")[-1]
-        if extension == "txt":
-            f = open(fileName, 'r')
-            string = f.read()
-            f.close() 
-            return string, extension
-        elif extension == "doc":
-            # Run a shell command and store the output as a string
-            # Antiword is used for extracting data out of Word docs. Does not work with docx, pdf etc.
-            return subprocess.Popen(['antiword', fileName], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0], extension
-        elif extension == "docx":
-            try:
-                return convertDocxToText(fileName), extension
-            except:
-                return ''
-                pass
-        #elif extension == "rtf":
-        #    try:
-        #        return convertRtfToText(fileName), extension
-        #    except:
-        #        return ''
-        #        pass
-        elif extension == "pdf":
+        if extension == "pdf":
             # ps2ascii converst pdf to ascii text
             # May have a potential formatting loss for unicode characters
             # return os.system(("ps2ascii %s") (fileName))
@@ -164,6 +144,27 @@ class Parse():
         else:
             print('Unsupported format')
             return '', ''
+        # if extension == "txt":
+        #     f = open(fileName, 'r')
+        #     string = f.read()
+        #     f.close() 
+        #     return string, extension
+        # elif extension == "doc":
+        #     # Run a shell command and store the output as a string
+        #     # Antiword is used for extracting data out of Word docs. Does not work with docx, pdf etc.
+        #     return subprocess.Popen(['antiword', fileName], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0], extension
+        # elif extension == "docx":
+        #     try:
+        #         return convertDocxToText(fileName), extension
+        #     except:
+        #         return ''
+        #         pass
+        #elif extension == "rtf":
+        #    try:
+        #        return convertRtfToText(fileName), extension
+        #    except:
+        #        return ''
+        #        pass
 
     def preprocess(self, document):
         '''
