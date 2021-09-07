@@ -89,9 +89,9 @@ class Parse():
         # Glob module matches certain patterns
         # doc_files = glob.glob("Language_Processing//resumes//*.doc")
         # docx_files = glob.glob("resumes/*.docx")
-        pdf_files = glob.glob("resumes/*.pdf")
         # rtf_files = glob.glob("resumes/*.rtf")
         # text_files = glob.glob("resumes/*.txt")
+        pdf_files = glob.glob("resumes/*.pdf")
 
         # files = set(doc_files + docx_files + pdf_files + rtf_files + text_files)
         files = set(pdf_files)
@@ -114,14 +114,14 @@ class Parse():
 
             self.getName(self.inputString, info)
 
-            self.Qualification(self.inputString,info)
+            # self.Qualification(self.inputString,info)
 
-            self.getExperience(self.inputString,info,debug=False)
+            # self.getExperience(self.inputString,info,debug=False)
 
             csv=exportToCSV()
             csv.write(info)
             self.information.append(info)
-            print (info)
+            pprint (info)
 
         
 
@@ -175,9 +175,9 @@ class Parse():
         try:
             # Try to get rid of special characters
             try:
-                document = document.decode('ascii', 'ignore')
+                document = document.encode("utf-8").decode("ascii","ignore")
             except:
-                document = document.encode('ascii', 'ignore')
+                print("There was an error in preprocessing")
             # Newlines are one element of structure in the data
             # Helps limit the context and breaks up the data as is intended in resumes - i.e., into points
             lines = [el.strip() for el in document.split("\n") if len(el) > 0]  # Splitting on the basis of newlines 
