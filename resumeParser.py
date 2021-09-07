@@ -71,7 +71,6 @@ class exportToCSV:
             fOut.write('FAILED_TO_WRITE\n')
         fOut.close()
 
-
     
 class Parse():
     # List (of dictionaries) that will store all of the values
@@ -121,7 +120,7 @@ class Parse():
             csv=exportToCSV()
             csv.write(info)
             self.information.append(info)
-            print (info)
+            pprint (info)
 
         
 
@@ -174,10 +173,10 @@ class Parse():
         '''
         try:
             # Try to get rid of special characters
-            try:
-                document = document.decode('ascii', 'ignore')
-            except:
-                document = document.encode('ascii', 'ignore')
+            try :
+                document.encode('utf-8').decode('ascii','ignore')
+            except :
+                print("There was an error at preprocess function when decoding to ascii")
             # Newlines are one element of structure in the data
             # Helps limit the context and breaks up the data as is intended in resumes - i.e., into points
             lines = [el.strip() for el in document.split("\n") if len(el) > 0]  # Splitting on the basis of newlines 
@@ -374,14 +373,12 @@ class Parse():
         return experience
 
 
-        
-
     def getQualification(self,inputString,infoDict,D1,D2):
         #key=list(qualification.keys())
         qualification={'institute':'','year':''}
         nameofinstitutes=open('nameofinstitutes.txt','r').read().lower()#open file which contains keywords like institutes,university usually  fond in institute names
-        nameofinstitues=set(nameofinstitutes.split())
-        instiregex=r'INSTI: {<DT.>?<NNP.*>+<IN.*>?<NNP.*>?}'
+        nameofinstitues=set(nameofinstitutes.lower().split())
+        instiregex="""INSTI: {<DT.>?<NNP.*>+<IN.*>?<NNP.*>?}"""
         chunkParser = nltk.RegexpParser(instiregex)
         
         
@@ -419,17 +416,17 @@ class Parse():
                             print(traceback.format_exc())
 
             if D1=='c\.?a':
-                infoDict['%sinstitute'%D1] ="I.C.A.I"
+                infoDict[f'{D1} institute'%D1] ="I.C.A.I"
             else:
                 if qualification['institute']:
-                    infoDict['%sinstitute'%D1] = str(qualification['institute'])
+                    infoDict[f'{D1} institute'] = str(qualification['institute'])
                 else:
-                    infoDict['%sinstitute'%D1] = "NULL"
+                    infoDict[f'{D1} institute'] = "NULL"
             if qualification['year']:
-                infoDict['%syear'%D1] = int(qualification['year'][0])
+                infoDict[f'{D1} year'] = int(qualification['year'][0])
             else:
-                infoDict['%syear'%D1] =0
-            infoDict['%sline'%D1]=list(set(line))
+                infoDict[f'{D1} year'] =0
+            infoDict[f'{D1} line']=list(set(line))
         except Exception as e:
             print(traceback.format_exc())
             print(e)
@@ -442,12 +439,7 @@ class Parse():
         #degree1=open('degree.txt','r').read().lower()#string to read from the txt file which contains all the degrees
         #degree=set(el for el in degree1.split('\n'))#saves all the degrees seperated by new lines,degree name contains both abbreviation and full names check file
         #qualification1={'CAline':'','CAcollege':'','CArank':'','CAyear':''}
-        self.getQualification(self.inputString,infoDict,'c\.?a','chartered accountant')
-        if infoDict['%sline'%'c\.?a']:
-         degre.append('ca')
-        self.getQualification(self.inputString,infoDict,'icwa','icwa')
-        if infoDict['%sline'%'icwa']:
-         degre.append('icwa')
+        
         self.getQualification(self.inputString,infoDict,'b\.?com','bachelor of commerce')
         if infoDict['%sline'%'b\.?com']:
          degre.append('b.com')
@@ -468,7 +460,11 @@ class Parse():
 
 
 if __name__ == "__main__":
-    verbose = False
-    if "-v" in str(sys.argv):
-        verbose = True
+
+
+
+    
+    verbose = True
     p = Parse(verbose)
+    
+    print("over")
